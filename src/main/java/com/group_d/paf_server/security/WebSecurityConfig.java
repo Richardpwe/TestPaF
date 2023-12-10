@@ -57,21 +57,21 @@ public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         // CORS Konfiguration
-        /*CorsConfiguration configuration = new CorsConfiguration();
+        CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000", "http://localhost:5173")); // URL Ihres Frontends
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("*"));
-        configuration.setAllowCredentials(true);*/
+        configuration.setAllowCredentials(true);
 
         http
-                //.cors(cors -> cors.configurationSource(request -> configuration))
-                .csrf(Customizer.withDefaults())
+                .cors(cors -> cors.configurationSource(request -> configuration))
+                //.csrf(Customizer.withDefaults())
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/player/register").permitAll()
                         .anyRequest().authenticated()
-                )
-                .httpBasic(Customizer.withDefaults())
-                .formLogin(Customizer.withDefaults());
+                );
+                //.httpBasic(Customizer.withDefaults());
+                //.formLogin(Customizer.withDefaults());
 
         return http.build();
     }

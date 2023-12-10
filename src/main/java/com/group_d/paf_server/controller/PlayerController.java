@@ -7,7 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.group_d.paf_server.dto.PlayerDTO;
 
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("player")
 public class PlayerController {
@@ -34,7 +34,7 @@ public class PlayerController {
     }
 
     // GET-Endpoint zum Abrufen der Details eines Spielers anhand der ID
-    @CrossOrigin
+
     @GetMapping("/{id}")
     public ResponseEntity<PlayerDTO> getPlayer(@PathVariable Long id) {
         Player player = playerService.findPlayerById(id);
@@ -42,7 +42,7 @@ public class PlayerController {
         return ResponseEntity.ok(playerDTO);
     }
 
-    @CrossOrigin
+
     @PostMapping("/login")
     public ResponseEntity<PlayerDTO> loginPlayer(@RequestBody PlayerDTO playerDTO) {
         return null;
