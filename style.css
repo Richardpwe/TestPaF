@@ -1,0 +1,119 @@
+body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+.toolbar {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #fff;
+    border: 1px solid #ddd;
+    padding: 10px;
+    border-radius: 15px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    display: flex;
+    align-items: center;
+    z-index: 100;
+}
+
+.toolbar button,
+.toolbar input {
+    margin: 0 5px;
+}
+
+#container {
+    width: 100%;
+    height: 100%;
+    background-color: #f0f0f0;
+}
+
+.tool-button {
+    position: relative;
+    background: none;
+    border: none;
+    padding: 5px;
+    cursor: pointer;
+}
+
+.tool-button:focus {
+    outline: none;
+}
+
+.tool-button i {
+    font-size: 20px;
+    color: #333;
+}
+
+.tool-button:hover i {
+    color: #666;
+}
+
+.tool-button.active i {
+    color: #0060e5;
+}
+
+.tool-button:hover::after {
+    content: attr(data-title);
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #333;
+    color: white;
+    padding: 5px;
+    border-radius: 4px;
+    font-size: 12px;
+    white-space: nowrap;
+    z-index: 1;
+}
+
+input[type="range"] {
+    -webkit-appearance: none;
+    width: 100%;
+    background: transparent;
+    opacity: 1;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    background: #000;
+    cursor: pointer;
+    border-radius: 50%;
+    margin-top: -8px;
+}
+
+input[type="range"]::-webkit-slider-runnable-track {
+    height: 4px;
+    background: #000;
+    cursor: pointer;
+    border: none;
+    border-radius: 4px;
+}
+
+input[type="color"] {
+    -webkit-appearance: none;
+    appearance: none;
+    border: none;
+    width: 36px;
+    height: 40px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 0;
+}
+
+input[type="color"]::-webkit-color-swatch {
+    border-radius: 5px;
+    border: none;
+}
+
+.color-picker-wrapper {
+    width: 40px;
+    height: 40px;
+    border-radius: 5px;
+}
