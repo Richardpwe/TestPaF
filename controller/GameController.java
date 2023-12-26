@@ -1,6 +1,5 @@
 package com.group_d.paf_server.controller;
 
-import com.group_d.paf_server.entity.Board;
 import com.group_d.paf_server.entity.Game;
 import com.group_d.paf_server.service.GameService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +36,7 @@ public class GameController {
      */
     @PostMapping
     public ResponseEntity<Game> createGame(@RequestBody Game game) {
-        Game newGame = gameService.createGame(game);
+        Game newGame = gameService.initializeGame(game);
         return ResponseEntity.ok(newGame);
     }
 

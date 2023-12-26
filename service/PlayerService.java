@@ -77,6 +77,11 @@ public class PlayerService {
         return playerRepository.findById(id)
                 .orElseThrow(() -> new PlayerNotFoundException("Player not found with id: " + id));
     }
+
+    public Player findPlayerByName(String name) throws PlayerNotFoundException {
+        return playerRepository.findByName(name)
+                .orElseThrow(() -> new PlayerNotFoundException("Player not found with name: " + name));
+    }
 }
 
 

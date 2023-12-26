@@ -54,69 +54,7 @@ public class Board {
         this.fieldsJson = convertFieldsToJson(this.fields);
     }
 
-    public enum GameState {
-        IN_PROGRESS, WIN, DRAW
-    }
-
-    public GameState checkGameState() {
-        // Überprüfen auf Gewinn
-        if (hasFourInARow()) {
-            return GameState.WIN;
-        }
-
-        // Überprüfen auf Unentschieden
-        if (isBoardFull()) {
-            return GameState.DRAW;
-        }
-
-        // Das Spiel läuft noch
-        return GameState.IN_PROGRESS;
-    }
-
-    private boolean hasFourInARow() {
-        for (int row = 0; row < fields.length; row++) {
-            for (int col = 0; col < fields[0].length; col++) {
-                String token = fields[row][col];
-                if (!token.equals("leer")) {
-                    // Horizontal
-                    if (col + 3 < fields[0].length &&
-                            token.equals(fields[row][col + 1]) &&
-                            token.equals(fields[row][col + 2]) &&
-                            token.equals(fields[row][col + 3])) {
-                        return true;
-                    }
-
-                    // Vertikal
-                    if (row + 3 < fields.length &&
-                            token.equals(fields[row + 1][col]) &&
-                            token.equals(fields[row + 2][col]) &&
-                            token.equals(fields[row + 3][col])) {
-                        return true;
-                    }
-
-                    // Diagonal nach unten rechts
-                    if (row + 3 < fields.length && col + 3 < fields[0].length &&
-                            token.equals(fields[row + 1][col + 1]) &&
-                            token.equals(fields[row + 2][col + 2]) &&
-                            token.equals(fields[row + 3][col + 3])) {
-                        return true;
-                    }
-
-                    // Diagonal nach oben rechts
-                    if (row - 3 >= 0 && col + 3 < fields[0].length &&
-                            token.equals(fields[row - 1][col + 1]) &&
-                            token.equals(fields[row - 2][col + 2]) &&
-                            token.equals(fields[row - 3][col + 3])) {
-                        return true;
-                    }
-                }
-            }
-        }
-        return false;
-    }
-
-
-    private boolean isBoardFull() {
+    public boolean isBoardFull() {
         for (int row = 0; row < fields.length; row++) {
             for (int col = 0; col < fields[row].length; col++) {
                 if (fields[row][col].equals("leer")) {
