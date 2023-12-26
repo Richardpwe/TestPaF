@@ -1,6 +1,8 @@
 package com.group_d.paf_server.service;
 
+import com.group_d.paf_server.entity.Board;
 import com.group_d.paf_server.entity.Game;
+import com.group_d.paf_server.entity.Player;
 import com.group_d.paf_server.repository.GameRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,8 +14,14 @@ import java.util.Optional;
 @Service
 public class GameService {
 
+    @Autowired
     private final GameRepository gameRepository;
+
+    @Autowired
     private final PlayerService playerService;
+
+    @Autowired
+    private BoardService boardService;
 
     @Autowired
     public GameService(GameRepository gameRepository, PlayerService playerService) {
@@ -22,6 +30,10 @@ public class GameService {
     }
 
     public Game createGame(Game game) {
+        // Initialisieren des Spielbretts
+        Board board = new Board();
+        game.setBoard(board);
+
         return gameRepository.save(game);
     }
 
@@ -61,7 +73,6 @@ public class GameService {
         return "Spiel nicht gefunden";
     }
 
-
     public Game findGameById(Long id) {
         Optional<Game> game = gameRepository.findById(id);
         if (game.isPresent()) {
@@ -100,5 +111,29 @@ public class GameService {
 
     public List<Game> findAllGames() {
         return gameRepository.findAll();
+    }
+
+    public Game makeMove(Long gameId, int column, Player player) {
+        Game game = findGameById(gameId);
+        if (game == null) {
+            // Spiel nicht gefunden
+            throw new RuntimeException("Spiel mit ID " + gameId + " nicht gefunden.");
+        }
+
+        Board board = game.getBoard();
+        boardService.placeTokenAndSave(board.getId(), column, player);
+
+        // Überprüfe Spielstatus nach dem Zug
+        Board.GameState gameState = board.checkGameState();
+
+        if (gameState == Board.GameState.WIN) {
+            game.setWinner(player);
+        } else if (gameState == Board.GameState.DRAW) {
+            game.setDraw(true);
+        } else {
+            // Das Spiel läuft noch
+        }
+
+        return gameRepository.save(game);
     }
 }

@@ -30,6 +30,10 @@ public class Game {
     @Column(name = "draw")
     private boolean draw;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "board_id", referencedColumnName = "id")
+    private Board board;
+
     // Konstruktor
     public Game() {
     }
@@ -81,5 +85,13 @@ public class Game {
 
     public void setDraw(boolean draw) {
         this.draw = draw;
+    }
+
+    public Board getBoard() {
+        return board;
+    }
+
+    public void setBoard(Board board) {
+        this.board = board;
     }
 }

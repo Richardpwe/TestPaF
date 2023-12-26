@@ -40,7 +40,6 @@ public class Player {
         this.password = password;
     }
 
-    // Getter und Setter
     public Long getId() {
         return id;
     }

@@ -1,5 +1,6 @@
 package com.group_d.paf_server.controller;
 
+import com.group_d.paf_server.entity.Board;
 import com.group_d.paf_server.entity.Game;
 import com.group_d.paf_server.service.GameService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,19 +51,6 @@ public class GameController {
     public ResponseEntity<Game> getGameById(@PathVariable Long id) {
         Game game = gameService.findGameById(id);
         return ResponseEntity.ok(game);
-    }
-
-    /**
-     * Aktualisiert die Details eines bestehenden Spiels.
-     *
-     * @param id Die ID des zu aktualisierenden Spiels.
-     * @param gameDetails Die neuen Details des Spiels.
-     * @return Eine ResponseEntity, die das aktualisierte Spiel enthält.
-     */
-    @PutMapping("/{id}")
-    public ResponseEntity<Game> updateGame(@PathVariable Long id, @RequestBody Game gameDetails) {
-        Game updatedGame = gameService.updateGame(id, gameDetails);
-        return ResponseEntity.ok(updatedGame);
     }
 
     /**
