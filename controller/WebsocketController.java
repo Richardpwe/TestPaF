@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 
 @Controller
@@ -14,6 +15,9 @@ public class WebsocketController {
 
     @Autowired
     private GameService gameService;
+
+    @Autowired
+    private SimpMessageSendingOperations messagingTemplate;
 
     @MessageMapping("/findMatch")
     public void findMatch(String playerId, SimpMessageSendingOperations messagingTemplate) {
@@ -29,15 +33,21 @@ public class WebsocketController {
         }
     }
 
-
-
     // Empfängt Spieleraktionen und sendet Spielupdates
     @MessageMapping("/playerMove")
-    @SendTo("/topic/gameUpdate")
-    public GameDTO playerMove(Long gameId, int column) {
-        // Spieleraktion durch die Spiel-ID und die Spaltennummer
+    public void playerMove(Long gameId, int column, SimpMessagingTemplate template) {
         Game updatedGame = gameService.makeMove(gameId, column, gameService.getCurrentPlayer(gameId));
-        return new GameDTO(updatedGame);
+        GameDTO gameDTO = new GameDTO(updatedGame);
+
+        // Senden des Spielupdates an alle Clients
+        template.convertAndSend("/topic/gameUpdate", gameDTO);
+
+        // Überprüfen, ob das Spiel beendet ist
+        if (updatedGame.getGameState() == Game.GameState.WIN || updatedGame.getGameState() == Game.GameState.DRAW) {
+            // Senden einer Nachricht an beide Spieler, dass das Spiel beendet ist
+            template.convertAndSendToUser(updatedGame.getPlayer1().getName(), "/queue/gameOver", gameDTO);
+            template.convertAndSendToUser(updatedGame.getPlayer2().getName(), "/queue/gameOver", gameDTO);
+        }
     }
 
     // Sendet Informationen über das Spielende an alle Clients

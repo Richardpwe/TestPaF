@@ -38,10 +38,6 @@ public class Game {
     public Game() {
     }
 
-    public enum GameState {
-        IN_PROGRESS, WIN, DRAW
-    }
-
     // Getter und Setter
     public Long getId() {
         return id;

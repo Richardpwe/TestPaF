@@ -123,16 +123,8 @@ public class GameService {
         Board board = game.getBoard();
         boardService.placeTokenAndSave(board.getId(), column, player);
 
-        // Überprüfe Spielstatus nach dem Zug
-        Game.GameState gameState = checkGameState(game);
-
-        if (gameState == Game.GameState.WIN) {
-            game.setWinner(player);
-        } else if (gameState == Game.GameState.DRAW) {
-            game.setDraw(true);
-        } else {
-            // Das Spiel läuft noch
-        }
+        // Spielstatus aktualisieren
+        setGameState(game);
 
         return gameRepository.save(game);
     }
@@ -164,9 +156,9 @@ public class GameService {
 
         //Spieler mit weniger Steinen ist an der Reihe
         Player beginner = player1Count <= player2Count ? game.getPlayer1() : game.getPlayer2();
-        Game.GameState gameState = checkGameState(game);
+        setGameState(game);
         //Wenn kein stein platziert beginnt Spieler1
-        if (gameState == Game.GameState.IN_PROGRESS && (player1Count == 0 && player2Count == 0)){
+        if (game.getWinner() == null && !game.isDraw() && (player1Count == 0 && player2Count == 0)){
             beginner = game.getPlayer1();
         }
 
@@ -174,23 +166,18 @@ public class GameService {
         return beginner;
     }
 
-    public Game.GameState checkGameState(Game game) {
+    public void setGameState(Game game) {
         Player gewinner = playerService.findPlayerByName(hasFourInARow(game));
 
         // Überprüfen auf Gewinn
         if (gewinner != null) {
             game.setWinner(gewinner);
-            return Game.GameState.WIN;
         }
 
         // Überprüfen auf Unentschieden
         if (game.getBoard().isBoardFull()) {
             game.setDraw(true);
-            return Game.GameState.DRAW;
         }
-
-        // Das Spiel läuft noch
-        return Game.GameState.IN_PROGRESS;
     }
 
     private String hasFourInARow(Game game) {
