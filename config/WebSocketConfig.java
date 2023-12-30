@@ -1,6 +1,9 @@
 package com.group_d.paf_server.config;
 
+import com.group_d.paf_server.security.jwt.WebSocketAuthInterceptor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.messaging.simp.config.ChannelRegistration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
@@ -14,6 +17,14 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 @EnableWebSocketMessageBroker
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
+    @Autowired
+    private WebSocketAuthInterceptor webSocketAuthInterceptor;
+
+    @Override
+    public void configureClientInboundChannel(ChannelRegistration registration) {
+        registration.interceptors(webSocketAuthInterceptor);
+    }
+
     /**
      * Registriert STOMP-Endpunkte, die von WebSockets genutzt werden.
      * STOMP = Simple Text Oriented Messaging Protocol, wird
@@ -25,7 +36,9 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         // Registriert den WebSocket-Endpunkt, der von Clients genutzt wird, um eine Verbindung herzustellen.
         // SockJS wird verwendet, um WebSocket-Kommunikation auch in Browsern zu ermöglichen, die kein WebSocket unterstützen.
-        registry.addEndpoint("/ws").withSockJS();
+        registry.addEndpoint("/ws")
+                .setAllowedOrigins("http://localhost:3000", "http://localhost:5173")
+                .withSockJS();
     }
 
     /**

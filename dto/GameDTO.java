@@ -12,6 +12,7 @@ public class GameDTO {
     private Long winnerId;
     private Date timestamp;
     private boolean draw;
+    private String[][] board;
 
     // Konstruktoren
     public GameDTO() {
@@ -26,56 +27,38 @@ public class GameDTO {
             this.winnerId = game.getWinner() != null ? game.getWinner().getId() : null;
             this.timestamp = game.getTimestamp();
             this.draw = game.isDraw();
+            if(game.getBoard() != null) {
+                this.board = game.getBoard().getFields();
+            }
         }
     }
 
-    // Getter und Setter
     public Long getId() {
         return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public Long getPlayer1Id() {
         return player1Id;
     }
 
-    public void setPlayer1Id(Long player1Id) {
-        this.player1Id = player1Id;
-    }
-
     public Long getPlayer2Id() {
         return player2Id;
-    }
-
-    public void setPlayer2Id(Long player2Id) {
-        this.player2Id = player2Id;
     }
 
     public Long getWinnerId() {
         return winnerId;
     }
 
-    public void setWinnerId(Long winnerId) {
-        this.winnerId = winnerId;
-    }
-
     public Date getTimestamp() {
         return timestamp;
-    }
-
-    public void setTimestamp(Date timestamp) {
-        this.timestamp = timestamp;
     }
 
     public boolean isDraw() {
         return draw;
     }
 
-    public void setDraw(boolean draw) {
-        this.draw = draw;
+    public String[][] getBoard() {
+        return board;
     }
 }
 

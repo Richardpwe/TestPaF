@@ -76,7 +76,7 @@ public class Board {
     }
 
     public String[][] getFields() {
-        return fields;
+        return this.fields;
     }
 
     public void setFields(String[][] fields) {

@@ -78,6 +78,13 @@ public class PlayerService {
                 .orElseThrow(() -> new PlayerNotFoundException("Player not found with id: " + id));
     }
 
+    /**
+     * Findet einen Spieler anhand seines Namens.
+     *
+     * @param name Der Name des Spielers.
+     * @return Das gefundene Player-Objekt.
+     * @throws PlayerNotFoundException wenn kein Spieler mit dem angegebenen Namen gefunden wird.
+     */
     public Player findPlayerByName(String name) throws PlayerNotFoundException {
         return playerRepository.findByName(name)
                 .orElseThrow(() -> new PlayerNotFoundException("Player not found with name: " + name));

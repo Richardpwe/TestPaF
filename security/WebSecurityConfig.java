@@ -100,10 +100,10 @@ public class WebSecurityConfig {
         http
                 .cors(cors -> cors.configurationSource(request -> configuration))
                 .csrf(csrf -> csrf
-                        .ignoringRequestMatchers("/player/register", "/player/login")
+                        .ignoringRequestMatchers("/player/register", "/player/login", "/ws/**")
                 )
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/player/register", "player/login").permitAll()
+                        .requestMatchers("/player/register", "player/login", "/ws/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .httpBasic(Customizer.withDefaults());
